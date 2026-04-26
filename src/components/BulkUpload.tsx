@@ -35,24 +35,29 @@ const BulkUpload: React.FC<BulkUploadProps> = ({ onUpload }) => {
     reader.readAsArrayBuffer(file);
   };
 
-  const downloadSample = () => {
+  const downloadSample = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
     const sample = [
       {
         'Asset ID': 'SIFY-L-001',
-        'Asset Name': 'Dell Laptop',
+        'Asset Name': 'Dell Latitude Laptop',
         'Type': 'Laptop',
         'Category': 'Permanent',
         'Ref No': 'REF-123',
-        'Model': 'Latitude 5420',
-        'Serial Number': 'SN001',
+        'Model': 'Latitude 5410',
+        'Serial Number': 'SN2024001',
         'Host Name': 'SIFY-LAP-001',
-        'Assigned To': 'John Doe',
-        'Use By': 'Developer',
+        'Assigned To': 'Rahul Sharma',
+        'Use By': 'Engineering',
         'Location': 'iTest Content Room',
         'Submission Status': 'Already Done',
         'Verification Status': 'Verified',
         'Asset Mapped': 'Yes',
-        'Remarks': 'New asset'
+        'Remarks': 'Standard issue'
       }
     ];
 
@@ -101,7 +106,7 @@ const BulkUpload: React.FC<BulkUploadProps> = ({ onUpload }) => {
             
             <div 
               className={cn(
-                "border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center transition-colors mb-6",
+                "relative border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center transition-colors mb-6",
                 file ? "border-blue-400 bg-blue-50" : "border-slate-200 hover:border-blue-300"
               )}
             >
@@ -118,14 +123,14 @@ const BulkUpload: React.FC<BulkUploadProps> = ({ onUpload }) => {
                 type="file" 
                 accept=".xlsx, .xls, .csv"
                 onChange={handleFileChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
+                className="absolute inset-0 opacity-0 cursor-pointer z-10"
               />
             </div>
 
             <div className="space-y-3">
               <button 
-                onClick={downloadSample}
-                className="w-full flex items-center justify-center px-4 py-2 border border-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors"
+                onClick={(e) => downloadSample(e)}
+                className="w-full flex items-center justify-center px-4 py-2 border border-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors relative z-20"
               >
                 <Download className="w-4 h-4 mr-2" />
                 Download Sample Format

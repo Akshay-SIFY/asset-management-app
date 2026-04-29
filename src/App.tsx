@@ -9,8 +9,17 @@ import BulkUpload from './components/BulkUpload';
 import Reports from './components/Reports';
 import { Asset } from './types';
 import { supabase } from './lib/supabase';
-import { Plus, AlertCircle, RefreshCcw } from 'lucide-react';
+import { AlertCircle, RefreshCcw } from 'lucide-react';
 import * as XLSX from 'xlsx';
+import LoginPage from './components/LoginPage';
+
+
+const AUTH_STORAGE_KEY = 'asset_app_session';
+
+const getConfiguredCredentials = () => ({
+  username: (typeof __ASSET_APP_USERNAME__ === 'string' ? __ASSET_APP_USERNAME__ : '').trim(),
+  password: typeof __ASSET_APP_PASSWORD__ === 'string' ? __ASSET_APP_PASSWORD__ : '',
+});
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -20,10 +29,18 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    fetchAssets();
+    const hasSession = localStorage.getItem(AUTH_STORAGE_KEY) === 'authenticated';
+    setIsAuthenticated(hasSession);
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchAssets();
+    }
+  }, [isAuthenticated]);
 
   const fetchAssets = async () => {
     if (!supabase) {
@@ -164,6 +181,32 @@ const handleDelete = async (asset: Asset) => {
     XLSX.writeFile(wb, 'Full_Asset_Inventory.xlsx');
   };
 
+  const handleLogin = (username: string, password: string) => {
+    const configured = getConfiguredCredentials();
+
+    if (!configured.username || !configured.password) {
+      alert('App credentials are not configured. Please set ASSET_APP_USERNAME and ASSET_APP_PASSWORD in environment variables.');
+      return false;
+    }
+
+    const success = username === configured.username && password === configured.password;
+
+    if (success) {
+      localStorage.setItem(AUTH_STORAGE_KEY, 'authenticated');
+      setIsAuthenticated(true);
+    }
+
+    return success;
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+    setIsAuthenticated(false);
+    setActiveTab('dashboard');
+    setIsSidebarOpen(false);
+    setEditingAsset(null);
+  };
+
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -232,9 +275,13 @@ const handleDelete = async (asset: Asset) => {
     }
   };
 
+  if (!isAuthenticated) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      <Header onMenuClick={() => setIsSidebarOpen(true)} />
+      <Header onMenuClick={() => setIsSidebarOpen(true)} onLogout={handleLogout} />
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar

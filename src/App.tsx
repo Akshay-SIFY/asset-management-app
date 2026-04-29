@@ -9,7 +9,7 @@ import BulkUpload from './components/BulkUpload';
 import Reports from './components/Reports';
 import { Asset } from './types';
 import { supabase } from './lib/supabase';
-import { AlertCircle, RefreshCcw, Plus } from 'lucide-react';
+import { Plus, AlertCircle, RefreshCcw } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import LoginPage from './components/LoginPage';
 

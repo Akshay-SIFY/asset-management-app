@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const disableHmr = env.DISABLE_HMR === 'true';
+const disableHmr = env.DISABLE_HMR === 'true';
 
   return {
     plugins: [react(), tailwindcss()],
@@ -14,9 +14,21 @@ export default defineConfig(({mode}) => {
         '@': path.resolve(__dirname),
       },
     },
-    server: {
-      hmr: disableHmr ? false : undefined,
+return {
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname),
     },
+  },
+  server: {
+    hmr: disableHmr ? false : undefined,
+  },
+  define: {
+    __ASSET_APP_USERNAME__: JSON.stringify(env.ASSET_APP_USERNAME ?? ''),
+    __ASSET_APP_PASSWORD__: JSON.stringify(env.ASSET_APP_PASSWORD ?? ''),
+  },
+};
     define: {
       __ASSET_APP_USERNAME__: JSON.stringify(env.ASSET_APP_USERNAME ?? ''),
       __ASSET_APP_PASSWORD__: JSON.stringify(env.ASSET_APP_PASSWORD ?? ''),

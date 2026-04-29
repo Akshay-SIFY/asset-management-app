@@ -39,6 +39,18 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogout }) => {
             </span>
           </div>
 
+<div className="hidden sm:flex items-center gap-2">
+  <div className="h-9 px-3 rounded-full bg-slate-900 text-white text-sm font-medium flex items-center">
+    Akshay Singh | Product Builder
+  </div>
+
+  <button
+    onClick={onLogout}
+    className="h-9 px-3 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-colors"
+  >
+    Logout
+  </button>
+</div>
           <button
             onClick={onLogout}
             className="h-9 px-3 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-colors"

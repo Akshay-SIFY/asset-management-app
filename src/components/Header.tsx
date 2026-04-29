@@ -3,9 +3,10 @@ import { Menu } from 'lucide-react';
 
 interface HeaderProps {
   onMenuClick: () => void;
+  onLogout: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
+const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogout }) => {
   return (
     <header className="sticky top-0 z-40 w-full bg-white border-b border-slate-200 shrink-0">
       <div className="flex items-center justify-between h-16 px-4 gap-3">
@@ -38,9 +39,18 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             </span>
           </div>
 
-          <div className="flex items-center justify-center h-9 px-3 rounded-full bg-slate-900 text-white text-sm font-medium">
+
+
+          <div className="hidden sm:flex items-center justify-center h-9 px-3 rounded-full bg-slate-900 text-white text-sm font-medium">
             Akshay Singh
           </div>
+
+          <button
+            onClick={onLogout}
+            className="h-9 px-3 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-colors"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </header>

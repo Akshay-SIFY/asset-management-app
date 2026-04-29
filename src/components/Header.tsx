@@ -51,12 +51,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, onLogout }) => {
     Logout
   </button>
 </div>
-          <button
-            onClick={onLogout}
-            className="h-9 px-3 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-colors"
-          >
-            Logout
-          </button>
+          
         </div>
       </div>
     </header>
